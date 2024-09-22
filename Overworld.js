@@ -18,12 +18,20 @@ class Overworld {
             }    
         }
 
-        const hero = new Image();
-        let scale = 2;
-        hero.onload = () => {
-            this.ctx.drawImage(hero, 0, 0, 16, 32, 15, 20, 16*scale, 32*scale);
-        }
-        hero.src = "/game_sprites/walk.png";
+        const hero = new GameObject({
+            x: 15,
+            y: 20
+        });
         
+        const npc = new GameObject({
+            x: 300,
+            y: 150,
+            src: "/game_sprites/NPC_test.png"
+        });
+
+        setTimeout(() => {
+            hero.sprite.draw(this.ctx);
+            npc.sprite.draw(this.ctx);
+        }, 200)
     }
 }
