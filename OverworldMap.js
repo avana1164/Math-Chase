@@ -8,7 +8,7 @@ class OverworldMap {
     }
 
     drawLowerImage(ctx) {
-        ctx.drawImage(this.lowerImage, 0, 0);
+        ctx.drawImage(this.lowerImage, 0, 0, 512, 256, 0, 0, 1024, 512);
     }
 
     drawUpperImage(ctx) {
@@ -21,11 +21,12 @@ window.OverworldMaps = {
         lowerSrc: "/game_sprites/grassy_field.png",
         upperSrc: "/game_sprites/grassy_field.png",
         gameObjects: {
-            hero: new GameObject({
+            hero: new Person({
+                isPlayerControlled: true,
                 x: 15,
                 y: 20
             }),
-            npc: new GameObject({
+            npc: new Person({
                 x: 300,
                 y: 150,
                 src: "/game_sprites/NPC_test.png"

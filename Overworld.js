@@ -16,12 +16,16 @@ class Overworld {
 
             //this method draw all the characters in gameObjects
             Object.values(this.map.gameObjects).forEach(object => {
-                object.x+=0.5;
+                object.update({
+                    arrow: this.directionInput.direction
+                });
                 object.sprite.draw(this.ctx);
             })
 
-            //this upper layer of the map will prevent any character from being draw on top of the house
-            //this.map.drawUpperImage(this.ctx); 
+            //this upper layer of the map will prevent any character from being drawn on top of the house
+            //this.map.drawUpperImage(this.ctx);
+            
+            //updates every frame rather than instantly
             requestAnimationFrame(() => {
                 step();
             });
@@ -32,6 +36,8 @@ class Overworld {
     init() {
         this.ctx.imageSmoothingEnabled = false;
         this.map = new OverworldMap(window.OverworldMaps.GrassyField);
+        this.directionInput = new DirectionInput();
+        this.directionInput.init();
         this.startGameLoop();
     }
 }
