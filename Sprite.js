@@ -20,6 +20,8 @@ class Sprite {
         let scale = 2;
         const x = this.gameObject.x;
         const y = this.gameObject.y;
-        ctx.drawImage(this.image, 0, 0, 16, 32, x, y, 16*scale, 32*scale);
+
+        //&& will ensure that the image is loaded before it is drawn to the canvas
+        this.isLoaded && ctx.drawImage(this.image, 0, 0, 16, 32, x, y, 16*scale, 32*scale);
     }
 }
