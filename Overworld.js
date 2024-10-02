@@ -7,7 +7,7 @@ ctx.imageSmoothingEnabled = false;
 /* 1 2 3
    4 5 6
    7 8 9*/
-let player = {x: 240, y: 300, width: 16, height: 32, speedX: 0, speedY: 0};
+
 let spriteDirection = {'KeyW': 2, 'KeyA': 3, 'KeyS': 0, 'KeyD': 1};
 let obstacleKey = {'house': "/game_sprites/House.png"};
 let obstacles = [['house', 200, 25], ['house', 400, 25]];
@@ -47,12 +47,20 @@ update = () => {
     y += vy/2;
     let spriteY = spriteDirection[keyPressed];
     ctx.drawImage(field, 0, 0, 512, 256, 0, 0, 1024, 512);
-    for(let i = 0; i < obstacles.length; i++){
+    zIndex = sort();
+    console.log(zIndex);
+    for(let i = 0; i < obstacles.length; i++) {
         let obstacle = new Image();
         obstacle.src = obstacleKey[obstacles[i][0]];
+        if (i == zIndex){
+            ctx.drawImage(playerImage, spriteX*16, spriteY*32, 16, 32, x, y, 32, 64);
+        }
         ctx.drawImage(obstacle, 0, 0, 80, 80, obstacles[i][1], obstacles[i][2], 160, 160);
     }
-    ctx.drawImage(playerImage, spriteX*16, spriteY*32, 16, 32, x, y, 32, 64);
+    if(zIndex > obstacles.length - 1){
+        ctx.drawImage(playerImage, spriteX*16, spriteY*32, 16, 32, x, y, 32, 64);
+    }
+    
     tickCount++;
     if (tickCount > ticksPerFrame){
         tickCount = 0;
@@ -64,6 +72,18 @@ update = () => {
     }
     requestAnimationFrame(update)
 }
+
+
+sort = () => {
+    for(let i = 0; i < obstacles.length; i++){
+        if (obstacles[i][2] + 110 > y){
+            return i;
+        }     
+    }
+    return obstacles.length;
+}
+
+
 
 update();
 
