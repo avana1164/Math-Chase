@@ -1,43 +1,70 @@
-class Overworld {
-    //config is an object literal with multiple keys corresponding to a value
-    constructor(config){
-        this.element = config.element;
-        this.canvas = this.element.querySelector(".game-canvas");
-        this.ctx = this.canvas.getContext("2d");
-        this.map = null;
+let c = document.querySelector(".game-canvas");
+let ctx = c.getContext("2d");
+
+ctx.imageSmoothingEnabled = false;
+
+//there are 9 different screens, start with only one screen
+/* 1 2 3
+   4 5 6
+   7 8 9*/
+let player = {x: 240, y: 300, width: 16, height: 32, speedX: 0, speedY: 0};
+let spriteDirection = {'KeyW': 2, 'KeyA': 3, 'KeyS': 0, 'KeyD': 1};
+let obstacleKey = {'house': "/game_sprites/House.png"};
+let obstacles = [['house', 200, 25], ['house', 400, 25]];
+const playerImage = new Image();
+const field = new Image();
+playerImage.src = "/game_sprites/walk.png";
+field.src = "/game_sprites/grassy_field1.png";
+
+let x = 20;
+let y = 30;
+let vx = 0;
+let vy = 0;
+let speed = 5;
+let keyPressed = 'KeyS';
+window.addEventListener("keydown", (e) => {
+    if (e.code == 'KeyW') vy = -speed; 
+    else if (e.code == 'KeyS') vy = speed;
+    else if (e.code == 'KeyD') vx = speed;
+    else if (e.code == 'KeyA') vx = -speed;
+    keyPressed = e.code;
+});
+
+window.addEventListener("keyup", (e) => {
+    if (e.code == 'KeyW') vy = 0; 
+    else if (e.code == 'KeyS') vy = 0;
+    else if (e.code == 'KeyD') vx = 0;
+    else if (e.code == 'KeyA') vx = 0;
+});
+
+let spriteX = 0;
+
+let tickCount = 0;
+const ticksPerFrame = 10;
+update = () => {
+    ctx.clearRect(0, 0, c.width, c.height);
+    x += vx/2;
+    y += vy/2;
+    let spriteY = spriteDirection[keyPressed];
+    ctx.drawImage(field, 0, 0, 512, 256, 0, 0, 1024, 512);
+    for(let i = 0; i < obstacles.length; i++){
+        let obstacle = new Image();
+        obstacle.src = obstacleKey[obstacles[i][0]];
+        ctx.drawImage(obstacle, 0, 0, 80, 80, obstacles[i][1], obstacles[i][2], 160, 160);
     }
-
-    startGameLoop() {
-        const step = () => {
-            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-            
-            //the lower layer will draw the first layer of the map
-            this.map.drawLowerImage(this.ctx);
-
-            //this method draw all the characters in gameObjects
-            Object.values(this.map.gameObjects).forEach(object => {
-                object.update({
-                    arrow: this.directionInput.direction
-                });
-                object.sprite.draw(this.ctx);
-            })
-
-            //this upper layer of the map will prevent any character from being drawn on top of the house
-            //this.map.drawUpperImage(this.ctx);
-            
-            //updates every frame rather than instantly
-            requestAnimationFrame(() => {
-                step();
-            });
+    ctx.drawImage(playerImage, spriteX*16, spriteY*32, 16, 32, x, y, 32, 64);
+    tickCount++;
+    if (tickCount > ticksPerFrame){
+        tickCount = 0;
+        if (vy != 0 || vx != 0) {
+            spriteX=(spriteX+1)%4;
+        } else {
+            spriteX = 0;
         }
-        step();
     }
-
-    init() {
-        this.ctx.imageSmoothingEnabled = false;
-        this.map = new OverworldMap(window.OverworldMaps.GrassyField);
-        this.directionInput = new DirectionInput();
-        this.directionInput.init();
-        this.startGameLoop();
-    }
+    requestAnimationFrame(update)
 }
+
+update();
+
+

@@ -1,14 +1,14 @@
 class GameObject {
     constructor(config){
-        this.x = config.x || 0;
-        this.y = config.y || 0;
-        this.direction = config.direction || "down";
-        this.sprite = new Sprite({
-            gameObject: this, 
-            src: config.src || "/game_sprites/walk.png"
-        });
+        this.xDim = config.xDim;
+        this.yDim = config.yDim;
+        this.x = config.x;
+        this.y = config.y;
+        this.sheet = new Image();
+        this.sheet.src = config.src; 
     }
-    update() {
+
+    draw() {
 
     }
 }
