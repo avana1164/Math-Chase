@@ -22,13 +22,28 @@ let vx = 0;
 let vy = 0;
 let speed = 5;
 let keyPressed = 'KeyS';
+let keys = ['KeyS', 'KeyA', 'KeyW', 'KeyD'];
+let isMoving = false;
 window.addEventListener("keydown", (e) => {
-    if (e.code == 'KeyW') vy = -speed; 
-    else if (e.code == 'KeyS') vy = speed;
-    else if (e.code == 'KeyD') vx = speed;
-    else if (e.code == 'KeyA') vx = -speed;
-    keyPressed = e.code;
+    if(e.code == 'KeyW' || e.code == 'KeyS' || e.code == 'KeyA' || e.code == 'KeyD'){
+        if (e.code == 'KeyW'){
+            vy = -speed;
+        }  
+        else if (e.code == 'KeyS'){
+            vy = speed;
+        } 
+        else if (e.code == 'KeyD'){
+            vx = speed;
+        }
+        else if (e.code == 'KeyA'){
+            vx = -speed;
+        }
+        keyPressed = e.code;
+    }
+        
 });
+
+
 
 window.addEventListener("keyup", (e) => {
     if (e.code == 'KeyW') vy = 0; 
@@ -48,7 +63,6 @@ update = () => {
     let spriteY = spriteDirection[keyPressed];
     ctx.drawImage(field, 0, 0, 512, 256, 0, 0, 1024, 512);
     zIndex = sort();
-    console.log(zIndex);
     for(let i = 0; i < obstacles.length; i++) {
         let obstacle = new Image();
         obstacle.src = obstacleKey[obstacles[i][0]];
