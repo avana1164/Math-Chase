@@ -27,7 +27,6 @@ class Person extends GameObject {
         } 
     }
 
-    
 
     draw = (ctx) => {
         ctx.drawImage(this.sheet, this.spriteX*this.xDim, this.spriteY*this.yDim, this.xDim, this.yDim, this.x, this.y, this.xDim*2, this.yDim*2);
