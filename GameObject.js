@@ -3,10 +3,13 @@ class GameObject {
         //include hitboxes for characters
         this.objectSrcKey = 
         {'house': {src: "/game_sprites/House.png", 
-                    rectX: 12, rectY: 55, rectWidth: 135, rectHeight: 100}, 
+                    rectX: 12, rectY: 55, rectWidth: 135, rectHeight: 100, zAdj: 110}, 
             
         'player': {src: "/game_sprites/walk.png",
-                    rectX: 6, rectY: 36, rectWidth: 20, rectHeight: 12}
+                    rectX: 6, rectY: 36, rectWidth: 20, rectHeight: 20},
+        'npc': {src: "/game_sprites/NPC_test.png",
+            rectX: 6, rectY: 36, rectWidth: 20, rectHeight: 20, zAdj: 10
+        }
         };
         this.xDim = config.xDim;
         this.yDim = config.yDim;
@@ -18,12 +21,13 @@ class GameObject {
         this.rectY = this.objectSrcKey[config.type].rectY;
         this.rectWidth = this.objectSrcKey[config.type].rectWidth;
         this.rectHeight = this.objectSrcKey[config.type].rectHeight;
+        this.zAdj = this.objectSrcKey[config.type].zAdj;
     }
 
     draw(ctx) {
         ctx.drawImage(this.sheet, 0, 0, this.xDim, this.yDim, this.x, this.y, this.xDim*2, this.yDim*2);
         ctx.strokeStyle = "black";
-        //this.drawRect(ctx);
+        this.drawRect(ctx);
     }
 
     drawRect(ctx){

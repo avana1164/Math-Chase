@@ -6,17 +6,27 @@ class Person extends GameObject {
         this.spriteX = 0;
         this.speed = config.speed;
         this.collDirections = [];
-        //this.isPlayer = config.isPlayer || true;
     }
 
-    moveCharacter = (collision) => {
+    movePlayer = (collision, collidedObj) => {
         this.lastKey = this.directionInput.lastKey;
         this.spriteY = this.directionInput.spriteDirection[this.lastKey][0];
         this.isMoving = false;
+
+        
         if(collision){
             if(this.collDirections.indexOf(this.lastKey) != null){
                 this.collDirections.push(this.lastKey);
-            }    
+                if((this.collDirections[0] == 'KeyW' || this.collDirections[0] == 'KeyS') && (this.x + this.rectX + this.rectWidth == collidedObj.rectX + collidedObj.x
+                || this.x + this.rectX + 1 == collidedObj.x + collidedObj.rectX + collidedObj.rectWidth)){
+                    this.collDirections = [];
+                }
+                
+                if((this.collDirections[0] == 'KeyA' || this.collDirections[0] == 'KeyD') && (this.y + this.rectY == collidedObj.y + collidedObj.rectY + collidedObj.rectHeight
+                || this.y + this.rectY + this.rectHeight == collidedObj.y + collidedObj.rectY)){
+                    this.collDirections = [];
+                }
+            }     
         } else {
             this.collDirections = [];
         }
@@ -36,9 +46,12 @@ class Person extends GameObject {
         } 
     }
 
+    
+
     draw = (ctx) => {
         ctx.drawImage(this.sheet, this.spriteX*this.xDim, this.spriteY*this.yDim, this.xDim, this.yDim, this.x, this.y, this.xDim*2, this.yDim*2);
-        //this.drawRect(ctx);
+        //console.log('drawn')
+        this.drawRect(ctx);
     }
 
 
