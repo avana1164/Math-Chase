@@ -14,7 +14,7 @@ let obstacles = [new GameObject({x: 200, y: 25, type: 'house', xDim: 80, yDim: 8
 let player = new Person({x: 20, y: 30, speed: 2, type: 'player', xDim: 16, yDim: 32});
 const field = new Image();
 field.src = "/game_sprites/grassy_field1.png";
-
+let collisionCheck = false;
 let tickCount = 0;
 const ticksPerFrame = 10;
 
@@ -22,8 +22,11 @@ update = () => {
     ctx.clearRect(0, 0, c.width, c.height);
     ctx.drawImage(field, 0, 0, 512, 256, 0, 0, 1024, 512);
 
+    collisionCheck = isColliding();
+
+    
     //will track player movement and will render all the objects to the screen 
-    player.moveCharacter();
+    player.moveCharacter(collisionCheck);
     render();
 
     //will change the player frame every 10 ticks
@@ -65,5 +68,24 @@ sort = () => {
     }
     return obstacles.length;
 }
+
+isColliding = () => {
+    for(let i = 0; i < obstacles.length; i++){
+        let objRectX = obstacles[i].rectX + obstacles[i].x;
+        let objRectY = obstacles[i].rectY + obstacles[i].y;
+        let playerRectX = player.rectX + player.x;
+        let playerRectY = player.rectY + player.y;
+        if(!(playerRectX + player.rectWidth < objRectX ||
+            playerRectX > objRectX + obstacles[i].rectWidth ||
+            playerRectY + player.rectHeight < objRectY ||
+            playerRectY > objRectY + obstacles[i].rectHeight
+        )){
+            return true; 
+        }
+    }
+    return false;
+}
+
+
 
 update();
