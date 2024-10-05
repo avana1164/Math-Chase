@@ -6,6 +6,7 @@ class Person extends GameObject {
         this.spriteX = 0;
         this.speed = config.speed;
         this.collDirections = [];
+        // this.collTypes = {'left': false, 'right': false, }
     }
 
     movePlayer = (collision, collidedObj) => {
@@ -15,14 +16,15 @@ class Person extends GameObject {
 
         
         if(collision){
-            if(this.collDirections.indexOf(this.lastKey) != null){
+            
+            if(this.collDirections.indexOf(this.lastKey) == -1){
+                console.log(this.collDirections[0]);
+
                 this.collDirections.push(this.lastKey);
                 if((this.collDirections[0] == 'KeyW' || this.collDirections[0] == 'KeyS') && (this.x + this.rectX + this.rectWidth == collidedObj.rectX + collidedObj.x
-                || this.x + this.rectX + 1 == collidedObj.x + collidedObj.rectX + collidedObj.rectWidth)){
+                || this.x + this.rectX == collidedObj.x + collidedObj.rectX + collidedObj.rectWidth)){
                     this.collDirections = [];
-                }
-                
-                if((this.collDirections[0] == 'KeyA' || this.collDirections[0] == 'KeyD') && (this.y + this.rectY == collidedObj.y + collidedObj.rectY + collidedObj.rectHeight
+                } else if((this.collDirections[0] == 'KeyA' || this.collDirections[0] == 'KeyD') && (this.y + this.rectY == collidedObj.y + collidedObj.rectY + collidedObj.rectHeight
                 || this.y + this.rectY + this.rectHeight == collidedObj.y + collidedObj.rectY)){
                     this.collDirections = [];
                 }
@@ -50,7 +52,6 @@ class Person extends GameObject {
 
     draw = (ctx) => {
         ctx.drawImage(this.sheet, this.spriteX*this.xDim, this.spriteY*this.yDim, this.xDim, this.yDim, this.x, this.y, this.xDim*2, this.yDim*2);
-        //console.log('drawn')
         this.drawRect(ctx);
     }
 

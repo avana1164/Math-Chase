@@ -6,7 +6,7 @@ class NPC extends GameObject{
         this.speed = config.speed;
     }
 
-    moveNPC = (collision) => {
+    moveNPC = (collision, collidedObj) => {
         if(!collision){
             this.y -= this.speed;
         }
@@ -14,7 +14,6 @@ class NPC extends GameObject{
 
     draw = (ctx) => {
         ctx.drawImage(this.sheet, this.spriteX*this.xDim, this.spriteY*this.yDim, this.xDim, this.yDim, this.x, this.y, this.xDim*2, this.yDim*2);
-        //console.log('drawn')
-        this.drawRect(ctx);
+        // this.drawRect(ctx);
     }
 }

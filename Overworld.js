@@ -13,6 +13,9 @@ let obstacles = [new GameObject({x: 200, y: 25, type: 'house', xDim: 80, yDim: 8
                  
 ];
 
+let arr = ['hello'];
+console.log(arr.indexOf('hi'));
+
 let npc = new NPC({x: 250, y: 300, speed: 2, type: 'npc', xDim: 16, yDim: 32});
 
 let player = new Person({x: 20, y: 30, speed: 2, type: 'player', xDim: 16, yDim: 32});
@@ -37,31 +40,27 @@ update = () => {
     NPCCollision = false;
     for(let i = 0; i < obstacles.length; i++){
         
-        if(isColliding(player, obstacles[i])){
+        if(!playerCollision && isColliding(player, obstacles[i])){
             playerCollision = true;
             collidedObjPlayer = obstacles[i];
-            break;
         }
         
-        
-    }
-
-    for(let i = 0; i < obstacles.length; i++){
-        if(isColliding(npc, obstacles[i])){
+        if(!npcCollision && isColliding(npc, obstacles[i])){
             npcCollision = true;
-            break;
-            //collidedObjNPC = obstacles[i];
+            collidedObjNPC = obstacles[i];     
         }
     }
 
-    // if(isColliding(player, npc)){
-    //     playerCollision = true;
-    //     npcCollision = true;
-    // }
+    if(isColliding(player, npc)){
+        playerCollision = true;
+        npcCollision = true;
+        collidedObjPlayer = npc;
+        collidedObjNPC = player;
+
+    }
     player.movePlayer(playerCollision, collidedObjPlayer);
-    npc.moveNPC(npcCollision);
+    npc.moveNPC(npcCollision, collidedObjNPC);
     render();
-    //ctx.drawImage(npc, 0, 0, 16, 32, 250, 300, 32, 64);
 
     //will change the player frame every 10 ticks
     tickCount++;
