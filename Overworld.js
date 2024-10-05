@@ -25,7 +25,8 @@ let playerCollision = false;
 let npcCollision = false;
 let tickCount = 0;
 const ticksPerFrame = 10;
-let collidedObj;
+let collidedObjPlayer;
+let collidedObjNPC
 update = () => {
     ctx.clearRect(0, 0, c.width, c.height);
     ctx.drawImage(field, 0, 0, 512, 256, 0, 0, 1024, 512);
@@ -33,23 +34,31 @@ update = () => {
     //will track player movement and will render all the objects to the screen 
     
     playerCollision = false;
+    NPCCollision = false;
     for(let i = 0; i < obstacles.length; i++){
         
         if(isColliding(player, obstacles[i])){
             playerCollision = true;
-            collidedObj = obstacles[i];
+            collidedObjPlayer = obstacles[i];
             break;
         }
-        // if(isColliding(npc, obstacles[i])){
-        //     npcCollision = true;
-        // }
+        
+        
+    }
+
+    for(let i = 0; i < obstacles.length; i++){
+        if(isColliding(npc, obstacles[i])){
+            npcCollision = true;
+            break;
+            //collidedObjNPC = obstacles[i];
+        }
     }
 
     // if(isColliding(player, npc)){
     //     playerCollision = true;
     //     npcCollision = true;
     // }
-    player.movePlayer(playerCollision, collidedObj);
+    player.movePlayer(playerCollision, collidedObjPlayer);
     npc.moveNPC(npcCollision);
     render();
     //ctx.drawImage(npc, 0, 0, 16, 32, 250, 300, 32, 64);
