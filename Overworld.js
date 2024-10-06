@@ -11,10 +11,7 @@ ctx.imageSmoothingEnabled = false;
    //
 let obstacles = [new GameObject({x: 200, y: 25, type: 'house', xDim: 80, yDim: 80}), 
                  new GameObject({x: 400, y: 25, type: 'house', xDim: 80, yDim: 80}),
-                 
-];
-
-let npc = new NPC({x: 250, y: 300, speed: 2, type: 'npc', xDim: 16, yDim: 32});
+                 new NPC({x: 250, y: 300, speed: 2, type: 'npc', xDim: 16, yDim: 32})];
 
 let player = new Person({x: 20, y: 30, speed: 2, type: 'player', xDim: 16, yDim: 32});
 
@@ -28,13 +25,13 @@ let tickCount = 0;
 const ticksPerFrame = 10;
 let collidedObjPlayer;
 let collidedObjNPC;
-
+let collisions = {top: false, bottom: false, left: false, right: false};
 update = () => {
     ctx.clearRect(0, 0, c.width, c.height);
     ctx.drawImage(field, 0, 0, 512, 256, 0, 0, 1024, 512);
     //will track player movement and will render all the objects to the screen 
-    player.movePlayer(obstacles[0]);
-    npc.moveNPC(obstacles[0]);
+    player.movePlayer(obstacles);
+    obstacles[2].moveNPC(obstacles);
     render();
 
     //will change the player frame every 10 ticks
@@ -47,10 +44,10 @@ update = () => {
 animate = () => {
     if (tickCount > ticksPerFrame){
         tickCount = 0;
-        if (player.isMoving) {
-            player.spriteX=(player.spriteX+1)%4;
+        if (obstacles[2].isMoving) {
+            obstacles[2].spriteX=(obstacles[2].spriteX+1)%4;
         } else {
-            player.spriteX = 0;
+            obstacles[2].spriteX = 0;
         }
     }
 }
@@ -70,7 +67,7 @@ render = () => {
     if(zIndex > obstacles.length - 1){
         player.draw(ctx);
     }
-    npc.draw(ctx);
+    //npc.draw(ctx);
 }
 
 sort = () => {

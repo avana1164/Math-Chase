@@ -22,6 +22,7 @@ class GameObject {
         this.rectWidth = this.objectSrcKey[config.type].rectWidth;
         this.rectHeight = this.objectSrcKey[config.type].rectHeight;
         this.zAdj = this.objectSrcKey[config.type].zAdj;
+        
     }
 
     draw(ctx) {
@@ -38,39 +39,56 @@ class GameObject {
         }
     }
 
-    isTopColliding(obj){
-        if((this.rectY + this.y == obj.rectY + obj.y + obj.rectHeight) && 
-        (this.rectX + this.x + this.rectWidth > obj.rectX + obj.x) &&
-        (this.rectX + this.x < obj.rectX + obj.x + obj.rectWidth)){
-            return true;
+    isTopColliding(objs){
+        for(let i = 0; i < objs.length; i++){
+            if((this.rectY + this.y == objs[i].rectY + objs[i].y + objs[i].rectHeight) && 
+            (this.rectX + this.x + this.rectWidth > objs[i].rectX + objs[i].x) &&
+            (this.rectX + this.x < objs[i].rectX + objs[i].x + objs[i].rectWidth)){
+                return true;
+            }
         }
         return false;
     }
 
-    isLeftColliding(obj){
-        if((this.rectX + this.x == obj.rectX + obj.x + obj.rectWidth) && 
-        (this.rectY + this.y + this.rectHeight > obj.rectY + obj.y) &&
-        (this.rectY + this.y < obj.rectY + obj.y + obj.rectHeight)){
-            return true;
+    isLeftColliding(objs){
+        for(let i = 0; i < objs.length; i++){
+            if((this.rectX + this.x == objs[i].rectX + objs[i].x + objs[i].rectWidth) && 
+            (this.rectY + this.y + this.rectHeight > objs[i].rectY + objs[i].y) &&
+            (this.rectY + this.y < objs[i].rectY + objs[i].y + objs[i].rectHeight)){
+                return true;
+            }
         }
         return false;
     }
 
-    isBottomColliding(obj){
-        if((this.rectY + this.y + this.rectHeight == obj.rectY + obj.y) && 
-        (this.rectX + this.x + this.rectWidth > obj.rectX + obj.x) &&
-        (this.rectX + this.x < obj.rectX + obj.x + obj.rectWidth)){
-            return true;
+    isBottomColliding(objs){
+        for(let i = 0; i < objs.length; i++){
+            if((this.rectY + this.y + this.rectHeight == objs[i].rectY + objs[i].y) && 
+            (this.rectX + this.x + this.rectWidth > objs[i].rectX + objs[i].x) &&
+            (this.rectX + this.x < objs[i].rectX + objs[i].x + objs[i].rectWidth)){
+                return true;
+            }
         }
         return false;
     }
 
-    isRightColliding(obj){
+    isRightColliding(objs){
+        for(let i = 0; i < objs.length; i++){
+            if((this.rectX + this.x + this.rectWidth == objs[i].rectX + objs[i].x) && 
+            (this.rectY + this.y + this.rectHeight > objs[i].rectY + objs[i].y) &&
+            (this.rectY + this.y < objs[i].rectY + objs[i].y + objs[i].rectHeight)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    isRightCollidingTest(obj){
         if((this.rectX + this.x + this.rectWidth == obj.rectX + obj.x) && 
-        (this.rectY + this.y + this.rectHeight > obj.rectY + obj.y) &&
-        (this.rectY + this.y < obj.rectY + obj.y + obj.rectHeight)){
-            return true;
-        }
-        return false;
+            (this.rectY + this.y + this.rectHeight > obj.rectY + obj.y) &&
+            (this.rectY + this.y < obj.rectY + obj.y + obj.rectHeight)){
+                return true;
+            }
+            return false;
     }
 }
