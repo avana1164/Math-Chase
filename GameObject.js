@@ -3,7 +3,7 @@ class GameObject {
         //include hitboxes for characters
         this.objectSrcKey = 
         {'house': {src: "/game_sprites/House.png", 
-                    rectX: 12, rectY: 55, rectWidth: 135, rectHeight: 100, zAdj: 110}, 
+                    rectX: 12, rectY: 55, rectWidth: 136, rectHeight: 100, zAdj: 110}, 
             
         'player': {src: "/game_sprites/walk.png",
                     rectX: 6, rectY: 36, rectWidth: 20, rectHeight: 20},
@@ -36,5 +36,41 @@ class GameObject {
             ctx.rect(this.rectX + this.x, this.rectY + this.y, this.rectWidth, this.rectHeight);
             ctx.stroke();
         }
+    }
+
+    isTopColliding(obj){
+        if((this.rectY + this.y == obj.rectY + obj.y + obj.rectHeight) && 
+        (this.rectX + this.x + this.rectWidth > obj.rectX + obj.x) &&
+        (this.rectX + this.x < obj.rectX + obj.x + obj.rectWidth)){
+            return true;
+        }
+        return false;
+    }
+
+    isLeftColliding(obj){
+        if((this.rectX + this.x == obj.rectX + obj.x + obj.rectWidth) && 
+        (this.rectY + this.y + this.rectHeight > obj.rectY + obj.y) &&
+        (this.rectY + this.y < obj.rectY + obj.y + obj.rectHeight)){
+            return true;
+        }
+        return false;
+    }
+
+    isBottomColliding(obj){
+        if((this.rectY + this.y + this.rectHeight == obj.rectY + obj.y) && 
+        (this.rectX + this.x + this.rectWidth > obj.rectX + obj.x) &&
+        (this.rectX + this.x < obj.rectX + obj.x + obj.rectWidth)){
+            return true;
+        }
+        return false;
+    }
+
+    isRightColliding(obj){
+        if((this.rectX + this.x + this.rectWidth == obj.rectX + obj.x) && 
+        (this.rectY + this.y + this.rectHeight > obj.rectY + obj.y) &&
+        (this.rectY + this.y < obj.rectY + obj.y + obj.rectHeight)){
+            return true;
+        }
+        return false;
     }
 }

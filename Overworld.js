@@ -8,13 +8,11 @@ ctx.imageSmoothingEnabled = false;
    4 5 6
    7 8 9*/
 
+   //
 let obstacles = [new GameObject({x: 200, y: 25, type: 'house', xDim: 80, yDim: 80}), 
                  new GameObject({x: 400, y: 25, type: 'house', xDim: 80, yDim: 80}),
                  
 ];
-
-let arr = ['hello'];
-console.log(arr.indexOf('hi'));
 
 let npc = new NPC({x: 250, y: 300, speed: 2, type: 'npc', xDim: 16, yDim: 32});
 
@@ -29,37 +27,14 @@ let npcCollision = false;
 let tickCount = 0;
 const ticksPerFrame = 10;
 let collidedObjPlayer;
-let collidedObjNPC
+let collidedObjNPC;
+
 update = () => {
     ctx.clearRect(0, 0, c.width, c.height);
     ctx.drawImage(field, 0, 0, 512, 256, 0, 0, 1024, 512);
-    
     //will track player movement and will render all the objects to the screen 
-    
-    playerCollision = false;
-    NPCCollision = false;
-    for(let i = 0; i < obstacles.length; i++){
-        
-        if(!playerCollision && isColliding(player, obstacles[i])){
-            playerCollision = true;
-            collidedObjPlayer = obstacles[i];
-        }
-        
-        if(!npcCollision && isColliding(npc, obstacles[i])){
-            npcCollision = true;
-            collidedObjNPC = obstacles[i];     
-        }
-    }
-
-    if(isColliding(player, npc)){
-        playerCollision = true;
-        npcCollision = true;
-        collidedObjPlayer = npc;
-        collidedObjNPC = player;
-
-    }
-    player.movePlayer(playerCollision, collidedObjPlayer);
-    npc.moveNPC(npcCollision, collidedObjNPC);
+    player.movePlayer(obstacles[0]);
+    npc.moveNPC(obstacles[0]);
     render();
 
     //will change the player frame every 10 ticks
@@ -106,22 +81,5 @@ sort = () => {
     }
     return obstacles.length;
 }
-
-isColliding = (obj1, obj2) => {
-    let objRectX1 = obj1.rectX + obj1.x;
-    let objRectY1 = obj1.rectY + obj1.y;
-    let objRectX2 = obj2.rectX + obj2.x;
-    let objRectY2 = obj2.rectY + obj2.y;
-    if(!(objRectX1 + obj1.rectWidth < objRectX2 ||
-        objRectX1 > objRectX2 + obj2.rectWidth ||
-        objRectY1 + obj1.rectHeight < objRectY2 ||
-        objRectY1 > objRectY2 + obj2.rectHeight 
-    )){
-        return true; 
-    }
-    return false;
-}
-
-
 
 update();

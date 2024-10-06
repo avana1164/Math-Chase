@@ -6,8 +6,8 @@ class NPC extends GameObject{
         this.speed = config.speed;
     }
 
-    moveNPC = (collision, collidedObj) => {
-        if(!collision){
+    moveNPC = (obj) => {
+        if(!this.isTopColliding(obj)){
             this.y -= this.speed;
         }
     }
