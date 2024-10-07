@@ -8,13 +8,15 @@ class Player extends Person{
 
     update(objs){
         this.lastKey = this.directionInput.lastKey;
-        this.collisions = {top: this.isTopColliding(objs), bottom: this.isBottomColliding(objs), 
-            left: this.isLeftColliding(objs), right: this.isRightColliding(objs)};
 
-        this.isMoving = (this.directionInput.keyDirections['KeyW'] && !this.collisions.top) 
-        || (this.directionInput.keyDirections['KeyA'] && !this.collisions.left) 
-        || (this.directionInput.keyDirections['KeyS'] && !this.collisions.bottom) 
-        || (this.directionInput.keyDirections['KeyD'] && !this.collisions.right);
+
+        console.log("Up Move: " + (this.directionInput.keyDirections['KeyW'] && !this.collisions.top));
+        console.log("Left Move: " + (this.directionInput.keyDirections['KeyA'] && !this.collisions.left));
+        // console.log("Down Move: " + (this.directionInput.keyDirections['KeyS'] && !this.collisions.bottom));
+        // console.log("Right Move: " + (this.directionInput.keyDirections['KeyD'] && !this.collisions.bottom));
+
+        this.isMoving = this.directionInput.keyDirections['KeyW'] || this.directionInput.keyDirections['KeyA']
+        || this.directionInput.keyDirections['KeyS'] || this.directionInput.keyDirections['KeyD'];
         
         if(this.lastKey == 'KeyW'){
             this.direction = 'up';
@@ -26,6 +28,6 @@ class Player extends Person{
             this.direction = 'right';
         }
 
-        this.moveCharacter(this.direction, this.isMoving);
+        this.moveCharacter(this.direction, this.isMoving, objs);
     }
 }

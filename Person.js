@@ -14,17 +14,19 @@ class Person extends GameObject {
         };
     }
 
-    moveCharacter (direction, isMoving){
+    moveCharacter (direction, isMoving, objs){
         this.spriteY = this.spriteDirections[direction];
         this.animate(isMoving);
+        this.collisions = {top: this.isTopColliding(objs), bottom: this.isBottomColliding(objs), 
+            left: this.isLeftColliding(objs), right: this.isRightColliding(objs)};
         if(isMoving){
-            if (direction == 'up') {
+            if (direction == 'up' && !this.collisions.top) {
                 this.y -= this.speed;
-            } else if (direction == 'left'){
+            } else if (direction == 'left' && !this.collisions.left){
                 this.x -= this.speed;
-            } else if (direction == 'down'){
+            } else if (direction == 'down' && !this.collisions.bottom){
                 this.y += this.speed;
-            } else if (direction == 'right'){
+            } else if (direction == 'right' && !this.collisions.right){
                 this.x += this.speed;
             } 
         }   
@@ -90,14 +92,4 @@ class Person extends GameObject {
         }
         return false;
     }
-
-    isRightCollidingTest(obj){
-        if((this.rectX + this.x + this.rectWidth == obj.rectX + obj.x) && 
-            (this.rectY + this.y + this.rectHeight > obj.rectY + obj.y) &&
-            (this.rectY + this.y < obj.rectY + obj.y + obj.rectHeight)){
-                return true;
-            }
-            return false;
-    }
-
 }
