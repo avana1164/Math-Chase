@@ -24,7 +24,7 @@ class Person extends GameObject {
                 this.x -= this.speed;
             } else if (direction == 'down'){
                 this.y += this.speed;
-            } else if (direction == 'up'){
+            } else if (direction == 'right'){
                 this.x += this.speed;
             } 
         }   

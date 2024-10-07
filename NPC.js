@@ -7,7 +7,6 @@ class NPC extends Person{
         this.collisions = {top: this.isTopColliding(objs), bottom: this.isBottomColliding(objs), 
             left: this.isLeftColliding(objs), right: this.isRightColliding(objs)};
         this.isMoving = !this.collisions.top;
-        this.moveCharacter('up', this.isMoving);
-        
+        this.moveCharacter('up', this.isMoving);   
     }
 }
