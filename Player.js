@@ -9,12 +9,6 @@ class Player extends Person{
     update(objs){
         this.lastKey = this.directionInput.lastKey;
 
-
-        console.log("Up Move: " + (this.directionInput.keyDirections['KeyW'] && !this.collisions.top));
-        console.log("Left Move: " + (this.directionInput.keyDirections['KeyA'] && !this.collisions.left));
-        // console.log("Down Move: " + (this.directionInput.keyDirections['KeyS'] && !this.collisions.bottom));
-        // console.log("Right Move: " + (this.directionInput.keyDirections['KeyD'] && !this.collisions.bottom));
-
         this.isMoving = this.directionInput.keyDirections['KeyW'] || this.directionInput.keyDirections['KeyA']
         || this.directionInput.keyDirections['KeyS'] || this.directionInput.keyDirections['KeyD'];
         
