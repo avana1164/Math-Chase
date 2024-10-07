@@ -1,38 +1,103 @@
 class Person extends GameObject {
     constructor(config){
         super(config);
-        this.directionInput = new DirectionInput();
-        this.isMoving = false;
+        this.tickCount = 0;
+        this.ticksPerFrame = 10;
         this.spriteX = 0;
+        this.spriteY = 0;
         this.speed = config.speed;
-        
+        this.spriteDirections = {
+            'up': 2,
+            'down': 0,
+            'left': 3,
+            'right': 1
+        };
     }
 
-    movePlayer = (objs) => {
-        this.lastKey = this.directionInput.lastKey;
-        this.spriteY = this.directionInput.spriteDirection[this.lastKey][0];
-        this.isMoving = false;
-        // console.log(this.isTopColliding(objs));
-        this.collisions = {top: this.isTopColliding(objs), bottom: this.isBottomColliding(objs), 
-            left: this.isLeftColliding(objs), right: this.isRightColliding(objs)};
-            //console.log(this.collisions);
-        if (this.directionInput.spriteDirection['KeyW'][1] && this.lastKey == 'KeyW' && !this.collisions.top) {
-            this.y -= this.speed;
-            this.isMoving = true;
-        } else if (this.directionInput.spriteDirection['KeyA'][1] && this.lastKey == 'KeyA' && !this.collisions.left){
-            this.x -= this.speed;
-            this.isMoving = true;
-        } else if (this.directionInput.spriteDirection['KeyS'][1] && this.lastKey == 'KeyS' && !this.collisions.bottom){
-            this.y += this.speed;
-            this.isMoving = true;
-        } else if (this.directionInput.spriteDirection['KeyD'][1] && this.lastKey == 'KeyD' && !this.collisions.right){
-            this.x += this.speed;
-            this.isMoving = true;
-        } 
+    moveCharacter (direction, isMoving){
+        this.spriteY = this.spriteDirections[direction];
+        this.animate(isMoving);
+        if(isMoving){
+            if (direction == 'up') {
+                this.y -= this.speed;
+            } else if (direction == 'left'){
+                this.x -= this.speed;
+            } else if (direction == 'down'){
+                this.y += this.speed;
+            } else if (direction == 'up'){
+                this.x += this.speed;
+            } 
+        }   
     }
 
     draw = (ctx) => {
         ctx.drawImage(this.sheet, this.spriteX*this.xDim, this.spriteY*this.yDim, this.xDim, this.yDim, this.x, this.y, this.xDim*2, this.yDim*2);
         this.drawRect(ctx);
     }
+
+    animate = (isMoving) => {
+        this.tickCount+=1
+        if (this.tickCount > this.ticksPerFrame){
+            this.tickCount = 0;
+            if (isMoving) {
+                this.spriteX=(this.spriteX+1)%4;
+            } else {
+                this.spriteX = 0;
+            }
+        }
+    }
+
+    isTopColliding(objs){
+        for(let i = 0; i < objs.length; i++){
+            if((this.rectY + this.y == objs[i].rectY + objs[i].y + objs[i].rectHeight) && 
+            (this.rectX + this.x + this.rectWidth > objs[i].rectX + objs[i].x) &&
+            (this.rectX + this.x < objs[i].rectX + objs[i].x + objs[i].rectWidth)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    isLeftColliding(objs){
+        for(let i = 0; i < objs.length; i++){
+            if((this.rectX + this.x == objs[i].rectX + objs[i].x + objs[i].rectWidth) && 
+            (this.rectY + this.y + this.rectHeight > objs[i].rectY + objs[i].y) &&
+            (this.rectY + this.y < objs[i].rectY + objs[i].y + objs[i].rectHeight)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    isBottomColliding(objs){
+        for(let i = 0; i < objs.length; i++){
+            if((this.rectY + this.y + this.rectHeight == objs[i].rectY + objs[i].y) && 
+            (this.rectX + this.x + this.rectWidth > objs[i].rectX + objs[i].x) &&
+            (this.rectX + this.x < objs[i].rectX + objs[i].x + objs[i].rectWidth)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    isRightColliding(objs){
+        for(let i = 0; i < objs.length; i++){
+            if((this.rectX + this.x + this.rectWidth == objs[i].rectX + objs[i].x) && 
+            (this.rectY + this.y + this.rectHeight > objs[i].rectY + objs[i].y) &&
+            (this.rectY + this.y < objs[i].rectY + objs[i].y + objs[i].rectHeight)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    isRightCollidingTest(obj){
+        if((this.rectX + this.x + this.rectWidth == obj.rectX + obj.x) && 
+            (this.rectY + this.y + this.rectHeight > obj.rectY + obj.y) &&
+            (this.rectY + this.y < obj.rectY + obj.y + obj.rectHeight)){
+                return true;
+            }
+            return false;
+    }
+
 }
