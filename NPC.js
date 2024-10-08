@@ -6,12 +6,13 @@ class NPC extends Person{
     }
 
     update(objs){
-        
-        if(this.yOriginal - this.y == 30 && this.x - this.xOriginal != 30){
+        // create A* pathfinding algorithm here
+        this.squareLength = 50;
+        if(this.yOriginal - this.y == this.squareLength && this.x - this.xOriginal != this.squareLength){
             this.moveCharacter('right', true, objs);
-        } else if(this.x - this.xOriginal == 30 && this.y - this.yOriginal != 30){
+        } else if(this.x - this.xOriginal == this.squareLength && this.y - this.yOriginal != this.squareLength){
             this.moveCharacter('down', true, objs);
-        } else if(this.y - this.yOriginal == 30 && this.xOriginal - this.x != 30){
+        } else if(this.y - this.yOriginal ==  this.squareLength && this.xOriginal - this.x != this.squareLength){
             this.moveCharacter('left', true, objs);
         } else {
             this.moveCharacter('up', true, objs);

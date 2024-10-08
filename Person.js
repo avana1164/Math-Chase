@@ -6,6 +6,7 @@ class Person extends GameObject {
         this.spriteX = 0;
         this.spriteY = 0;
         this.speed = config.speed;
+        this.zIndex = null;
         this.spriteDirections = {
             'up': 2,
             'down': 0,
@@ -14,7 +15,7 @@ class Person extends GameObject {
         };
     }
 
-    moveCharacter (direction, isMoving, objs){
+    moveCharacter (direction, isMoving, objs) {
         this.spriteY = this.spriteDirections[direction];
         this.animate(isMoving);
         this.collisions = {top: this.isTopColliding(objs), bottom: this.isBottomColliding(objs), 
@@ -32,12 +33,12 @@ class Person extends GameObject {
         }   
     }
 
-    draw = (ctx) => {
+    draw (ctx) {
         ctx.drawImage(this.sheet, this.spriteX*this.xDim, this.spriteY*this.yDim, this.xDim, this.yDim, this.x, this.y, this.xDim*2, this.yDim*2);
         this.drawRect(ctx);
     }
 
-    animate = (isMoving) => {
+    animate (isMoving) {
         this.tickCount+=1
         if (this.tickCount > this.ticksPerFrame){
             this.tickCount = 0;
@@ -49,7 +50,7 @@ class Person extends GameObject {
         }
     }
 
-    isTopColliding(objs){
+    isTopColliding (objs) {
         for(let i = 0; i < objs.length; i++){
             if((this.rectY + this.y == objs[i].rectY + objs[i].y + objs[i].rectHeight) && 
             (this.rectX + this.x + this.rectWidth > objs[i].rectX + objs[i].x) &&
@@ -60,7 +61,7 @@ class Person extends GameObject {
         return false;
     }
 
-    isLeftColliding(objs){
+    isLeftColliding (objs) {
         for(let i = 0; i < objs.length; i++){
             if((this.rectX + this.x == objs[i].rectX + objs[i].x + objs[i].rectWidth) && 
             (this.rectY + this.y + this.rectHeight > objs[i].rectY + objs[i].y) &&
@@ -71,7 +72,7 @@ class Person extends GameObject {
         return false;
     }
 
-    isBottomColliding(objs){
+    isBottomColliding (objs) {
         for(let i = 0; i < objs.length; i++){
             if((this.rectY + this.y + this.rectHeight == objs[i].rectY + objs[i].y) && 
             (this.rectX + this.x + this.rectWidth > objs[i].rectX + objs[i].x) &&
@@ -82,7 +83,7 @@ class Person extends GameObject {
         return false;
     }
 
-    isRightColliding(objs){
+    isRightColliding (objs) {
         for(let i = 0; i < objs.length; i++){
             if((this.rectX + this.x + this.rectWidth == objs[i].rectX + objs[i].x) && 
             (this.rectY + this.y + this.rectHeight > objs[i].rectY + objs[i].y) &&

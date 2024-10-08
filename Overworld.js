@@ -10,11 +10,10 @@ ctx.imageSmoothingEnabled = false;
 
    //
 let obstacles = [new GameObject({x: 200, y: 25, type: 'house', xDim: 80, yDim: 80}), 
-                 new GameObject({x: 400, y: 25, type: 'house', xDim: 80, yDim: 80}),
-                 new NPC({x: 250, y: 300, speed: 2, type: 'npc', xDim: 16, yDim: 32})];
+                 new GameObject({x: 400, y: 25, type: 'house', xDim: 80, yDim: 80})];
 
-let player = new Player({x: 20, y: 30, speed: 2, type: 'player', xDim: 16, yDim: 32});
-
+let characters = [new Player({x: 20, y: 30, speed: 2, type: 'player', xDim: 16, yDim: 32}), 
+                new NPC({x: 400, y: 300, speed: 2, type: 'npc', xDim: 16, yDim: 32})];
 
 const field = new Image();
 field.src = "/game_sprites/grassy_field1.png";
@@ -22,36 +21,60 @@ field.src = "/game_sprites/grassy_field1.png";
 update = () => {
     ctx.clearRect(0, 0, c.width, c.height);
     ctx.drawImage(field, 0, 0, 512, 256, 0, 0, 1024, 512);
-    //will track player movement and will render all the objects to the screen 
-    render();
-    player.update(obstacles);
-    obstacles[2].update(obstacles);
+
+    //will track player movement and will render all the objects to the screen
+    
+    let objects = sort(); 
+    render(objects);
+
+    for(let i = 0; i < characters.length; i++){
+        characters[i].update(objects);
+    }   
 
     requestAnimationFrame(update)
 }
 
-render = () => {
-    zIndex = sort();
-
-    for(let i = 0; i < obstacles.length; i++) {
-        if (i == zIndex){
-            player.draw(ctx);     
-        }
-        obstacles[i].draw(ctx);
-        
-    }
-    if(zIndex > obstacles.length - 1){
-        player.draw(ctx);
+render = (objects) => {
+    for(let i = 0; i < objects.length; i++) {
+        objects[i].draw(ctx);
     }
 }
 
 sort = () => {
-    for(let i = 0; i < obstacles.length; i++){
-        if (obstacles[i].y + obstacles[i].zAdj > player.y){
-            return i;
-        }     
+    let objects = [];
+    //insert the characters into obstacles
+    let pointer1 = 0;
+    let pointer2 = 0;
+    
+    if(characters[0].rectY + characters[0].y > characters[1].rectY + characters[1].y){
+        let temp = characters[1];
+        characters[1] = characters[0];
+        characters[0] = temp;
     }
-    return obstacles.length;
+
+    for(let i = 0; i < obstacles.length + characters.length; i++){
+        if(pointer1 < obstacles.length && pointer2 < characters.length){
+            if (obstacles[pointer1].rectY + obstacles[pointer1].y < characters[pointer2].rectY + characters[pointer2].y){
+                objects.push(obstacles[pointer1]);
+                pointer1++;
+            } else if (obstacles[pointer1].rectY + obstacles[pointer1].y > characters[pointer2].rectY + characters[pointer2].y){
+                objects.push(characters[pointer2]);
+                pointer2++;
+            } else {
+                objects.push(obstacles[pointer1]);
+                objects.push(characters[pointer2]);
+                pointer1++;
+                pointer2++;
+            }
+        } else if (pointer1 < obstacles.length) {
+            objects.push(obstacles[pointer1]);
+            pointer1++;
+        } else if (pointer2 < obstacles.length){
+            objects.push(characters[pointer2]);
+            pointer2++;
+        }
+    }
+    return objects;
 }
 
 update();
