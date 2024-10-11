@@ -31,6 +31,9 @@ update = () => {
     drawGrid();
     for(let i = 0; i < characters.length; i++){
         characters[i].update(objects);
+        if(characters[i].type == 'npc'){
+            characters[i].drawPath(ctx);
+        }
     }   
 
     requestAnimationFrame(update)

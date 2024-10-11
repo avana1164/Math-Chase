@@ -56,7 +56,7 @@ class Person extends GameObject {
             if(((this.rectY + this.y == objs[i].rectY + objs[i].y + objs[i].rectHeight) && 
             (this.rectX + this.x + this.rectWidth > objs[i].rectX + objs[i].x) &&
             (this.rectX + this.x < objs[i].rectX + objs[i].x + objs[i].rectWidth)) || this.rectY + this.y <= 0){
-                return true;
+                return [true, objs[i].type];
             }
         }
         return false;
@@ -92,6 +92,18 @@ class Person extends GameObject {
                 return true;
             }
         }
+        return false;
+    }
+
+    npcCollidingPlayer(npc, player){
+        if(npc.x + npc.rectX <= player.x + player.rectX + player.rectWidth &&
+            npc.x + npc.rectX + npc.rectWidth >= player.x + player.rectX &&
+            npc.y + npc.rectY + npc.rectHeight >= player.y + player.rectY &&
+            npc.y + npc.rectY <= player.y + player.rectY + player.rectHeight
+        ) {
+            return true;
+        }
+
         return false;
     }
 }

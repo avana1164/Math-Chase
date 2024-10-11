@@ -24,11 +24,11 @@ class GameObject {
 
         this.solidTilesX = [(this.rectX + this.x)/32, (this.rectX + this.x + this.rectWidth)/32];
         this.solidTilesY = [(this.rectY + this.y)/32, (this.rectY + this.y + this.rectHeight)/32];
+        this.pFinder = new PathFinder();
     }
 
     draw(ctx) {
         ctx.drawImage(this.sheet, 0, 0, this.xDim, this.yDim, this.x, this.y, this.xDim*2, this.yDim*2);
-        
         this.drawRect(ctx);
     }
 
@@ -38,6 +38,15 @@ class GameObject {
             ctx.beginPath();
             ctx.rect(this.rectX + this.x, this.rectY + this.y, this.rectWidth, this.rectHeight);
             ctx.stroke();
+        }
+    }
+
+    drawPath(ctx){
+        ctx.fillStyle = "rgba(255, 0, 0, 0.5)";
+        for(let i = 0; i < this.pFinder.pathList.length; i++){
+            let x = this.pFinder.pathList[i].col*32;
+            let y = this.pFinder.pathList[i].row*32;
+            ctx.fillRect(x, y, 32, 32);
         }
     }
 }
