@@ -10,28 +10,21 @@ class NPC extends Person{
 
     update(objs){
 
-        let goalCol = 15;
+        let goalCol = 30;
         let goalRow = 2;
 
-        this.searchPath(goalCol, goalRow);
+        //console.log(this.onPath);
+        if(this.onPath){
+            this.searchPath(goalCol, goalRow, this.obstacles);
+        }
 
-        // this.squareLength = 64;
-        // if(this.yOriginal - this.y == this.squareLength && this.x - this.xOriginal != this.squareLength){
-        //     this.moveCharacter('right', true, objs);
-        // } else if(this.x - this.xOriginal == this.squareLength && this.y - this.yOriginal != this.squareLength){
-        //     this.moveCharacter('down', true, objs);
-        // } else if(this.y - this.yOriginal ==  this.squareLength && this.xOriginal - this.x != this.squareLength){
-        //     this.moveCharacter('left', true, objs);
-        // } else {
-        //     this.moveCharacter('up', true, objs);
-        // }
+        this.moveCharacter(this.onPath, objs);
     }
 
-    searchPath(goalCol, goalRow){
+    searchPath(goalCol, goalRow, obstacles){
         let startCol = (this.x + this.rectX)/32;
         let startRow = (this.y + this.rectY)/32;
-
-        this.pFinder.setNodes(startCol, startRow, goalCol, goalRow);
+        this.pFinder.setNodes(Math.round(startCol), Math.round(startRow), goalCol, goalRow, obstacles);
 
         if(this.pFinder.search() == true){
             let nextX = this.pFinder.pathList[0].col * 32;
@@ -60,32 +53,30 @@ class NPC extends Person{
                     this.direction = 'left';
                 }
             } else if(npcTop > nextY && npcLeft < nextX){
-                direction = 'up';
+                this.direction = 'up';
                 if(this.collisions.up){
                     this.direction = 'right';
                 }
             } else if(npcTop < nextY ** npcLeft > nextX){
-                direction = 'down';
+                this.direction = 'down';
                 if(this.collisions){
                     this.direction = 'left';
                 }
             } else if(npcTop < nextY ** npcLeft < nextX){
-                direction = 'down';
+                this.direction = 'down';
                 if(this.collisions){
                     this.direction = 'right';
                 }
             }
 
-            this.moveCharacter('true', objs);
+            
             let nextCol = this.pFinder.pathList[0].col;
             let nextRow = this.pFinder.pathList[0].row;
             if(nextCol == goalCol && nextRow == goalRow){
                 this.onPath = false;
             }
         }
-    }
-
-    
+    } 
 }
 
 class Node {
@@ -143,7 +134,7 @@ class PathFinder {
         this.step = 0;
     }
 
-    setNodes(startCol, startRow, goalCol, goalRow){
+    setNodes(startCol, startRow, goalCol, goalRow, obstacles){
         this.resetNodes();
 
         this.startNode = this.node[startCol][startRow];
@@ -151,12 +142,9 @@ class PathFinder {
         this.goalNode = this.node[goalCol][goalRow];
         this.openList.push(this.currentNode);
 
-        let col = 0;
-        let row = 0;
-
-        for(let i = 0; i < this.obstacles.length; i++){
-            for(let j = this.obstacles[i].solidTilesX[0]; j < this.obstacles[i].solidTilesX[1]; j++){
-                for(let k = this.obstacles[i].solidTilesY[0]; k < this.obstacles[i].solidTilesY[1]; k++){
+        for(let i = 0; i < obstacles.length; i++){
+            for(let j = obstacles[i].solidTilesX[0]; j < obstacles[i].solidTilesX[1]; j++){
+                for(let k = obstacles[i].solidTilesY[0]; k < obstacles[i].solidTilesY[1]; k++){
                     this.node[j][k].solid = true;
                 }
             }
@@ -232,7 +220,7 @@ class PathFinder {
             this.step++;
         }
 
-        return goalReached;
+        return this.goalReached;
     }
 
     openNode(node){

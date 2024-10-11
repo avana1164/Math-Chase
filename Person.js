@@ -26,7 +26,9 @@ class Person extends GameObject {
         this.collisions.left = this.isLeftColliding(objs);
         this.collisions.right = this.isRightColliding(objs);
 
-
+        if(this.type == 'npc'){
+            console.log(isMoving);
+        }
         if(isMoving){
             if (this.direction == 'up' && !this.collisions.top) {
                 this.y -= this.speed;
@@ -35,6 +37,7 @@ class Person extends GameObject {
             } else if (this.direction == 'down' && !this.collisions.bottom){
                 this.y += this.speed;
             } else if (this.direction == 'right' && !this.collisions.right){
+                //console.log("hello")
                 this.x += this.speed;
             } 
         }   
