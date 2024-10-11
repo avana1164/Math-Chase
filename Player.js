@@ -2,7 +2,6 @@ class Player extends Person{
     constructor(config){
         super(config);
         this.directionInput = new DirectionInput();
-        this.direction = null;
         this.isMoving = false; 
     }
 
@@ -21,7 +20,8 @@ class Player extends Person{
         } else if(this.lastKey == 'KeyD'){
             this.direction = 'right';
         }
+            
 
-        this.moveCharacter(this.direction, this.isMoving, objs);
+        this.moveCharacter(this.isMoving, objs);
     }
 }

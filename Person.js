@@ -7,6 +7,8 @@ class Person extends GameObject {
         this.spriteY = 0;
         this.speed = config.speed;
         this.zIndex = null;
+        this.direction = 'down';
+        this.collisions = {top: false, bottom: false, left: false, right: false};
         this.spriteDirections = {
             'up': 2,
             'down': 0,
@@ -15,19 +17,24 @@ class Person extends GameObject {
         };
     }
 
-    moveCharacter (direction, isMoving, objs) {
-        this.spriteY = this.spriteDirections[direction];
+    moveCharacter (isMoving, objs) {
+        this.spriteY = this.spriteDirections[this.direction];
         this.animate(isMoving);
-        this.collisions = {top: this.isTopColliding(objs), bottom: this.isBottomColliding(objs), 
-            left: this.isLeftColliding(objs), right: this.isRightColliding(objs)};
+
+        this.collisions.top = this.isTopColliding(objs);
+        this.collisions.bottom = this.isBottomColliding(objs);
+        this.collisions.left = this.isLeftColliding(objs);
+        this.collisions.right = this.isRightColliding(objs);
+
+
         if(isMoving){
-            if (direction == 'up' && !this.collisions.top) {
+            if (this.direction == 'up' && !this.collisions.top) {
                 this.y -= this.speed;
-            } else if (direction == 'left' && !this.collisions.left){
+            } else if (this.direction == 'left' && !this.collisions.left){
                 this.x -= this.speed;
-            } else if (direction == 'down' && !this.collisions.bottom){
+            } else if (this.direction == 'down' && !this.collisions.bottom){
                 this.y += this.speed;
-            } else if (direction == 'right' && !this.collisions.right){
+            } else if (this.direction == 'right' && !this.collisions.right){
                 this.x += this.speed;
             } 
         }   
