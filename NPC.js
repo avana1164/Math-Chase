@@ -10,18 +10,19 @@ class NPC extends Person{
 
     update(objs){
 
-        let goalCol = 30;
-        let goalRow = 2;
+        let goalCol = 6;
+        let goalRow = 1;
 
         //console.log(this.onPath);
         if(this.onPath){
-            this.searchPath(goalCol, goalRow, this.obstacles);
+            this.searchPath(goalCol, goalRow, this.obstacles, objs);
+
         }
 
         this.moveCharacter(this.onPath, objs);
     }
 
-    searchPath(goalCol, goalRow, obstacles){
+    searchPath(goalCol, goalRow, obstacles, objs){
         let startCol = (this.x + this.rectX)/32;
         let startRow = (this.y + this.rectY)/32;
         this.pFinder.setNodes(Math.round(startCol), Math.round(startRow), goalCol, goalRow, obstacles);
@@ -49,22 +50,22 @@ class NPC extends Person{
                 }
             } else if(npcTop > nextY && npcLeft > nextX) {
                 this.direction = 'up';
-                if(this.collisions.up){
+                if(this.isTopColliding(objs)){
                     this.direction = 'left';
                 }
             } else if(npcTop > nextY && npcLeft < nextX){
                 this.direction = 'up';
-                if(this.collisions.up){
+                if(this.isTopColliding(objs)){
                     this.direction = 'right';
                 }
-            } else if(npcTop < nextY ** npcLeft > nextX){
+            } else if(npcTop < nextY && npcLeft > nextX){
                 this.direction = 'down';
-                if(this.collisions){
+                if(this.isBottomColliding(objs)){
                     this.direction = 'left';
                 }
-            } else if(npcTop < nextY ** npcLeft < nextX){
+            } else if(npcTop < nextY && npcLeft < nextX){
                 this.direction = 'down';
-                if(this.collisions){
+                if(this.isBottomColliding(objs)){
                     this.direction = 'right';
                 }
             }

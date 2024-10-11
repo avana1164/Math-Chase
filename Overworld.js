@@ -14,7 +14,7 @@ let obstacles = [new GameObject({x: 176, y: 41, type: 'house', xDim: 80, yDim: 8
                  new GameObject({x: 400, y: 41, type: 'house', xDim: 80, yDim: 80})];
 
 let characters = [new Player({x: 32, y: 32, speed: 2, type: 'player', xDim: 16, yDim: 32}), 
-                new NPC({x: 384, y: 288, speed: 2, type: 'npc', xDim: 16, yDim: 32, obstacles: obstacles})];
+                new NPC({x: 550, y: 110, speed: 2, type: 'npc', xDim: 16, yDim: 32, obstacles: obstacles})];
 
 const field = new Image();
 field.src = "/game_sprites/grassy_field1.png";

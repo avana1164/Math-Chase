@@ -8,7 +8,7 @@ class Person extends GameObject {
         this.speed = config.speed;
         this.zIndex = null;
         this.direction = 'down';
-        this.collisions = {top: false, bottom: false, left: false, right: false};
+        
         this.spriteDirections = {
             'up': 2,
             'down': 0,
@@ -21,23 +21,14 @@ class Person extends GameObject {
         this.spriteY = this.spriteDirections[this.direction];
         this.animate(isMoving);
 
-        this.collisions.top = this.isTopColliding(objs);
-        this.collisions.bottom = this.isBottomColliding(objs);
-        this.collisions.left = this.isLeftColliding(objs);
-        this.collisions.right = this.isRightColliding(objs);
-
-        if(this.type == 'npc'){
-            console.log(isMoving);
-        }
         if(isMoving){
-            if (this.direction == 'up' && !this.collisions.top) {
+            if (this.direction == 'up' && !this.isTopColliding(objs)) {
                 this.y -= this.speed;
-            } else if (this.direction == 'left' && !this.collisions.left){
+            } else if (this.direction == 'left' && !this.isLeftColliding(objs)){
                 this.x -= this.speed;
-            } else if (this.direction == 'down' && !this.collisions.bottom){
+            } else if (this.direction == 'down' && !this.isBottomColliding(objs)){
                 this.y += this.speed;
-            } else if (this.direction == 'right' && !this.collisions.right){
-                //console.log("hello")
+            } else if (this.direction == 'right' && !this.isRightColliding(objs)){
                 this.x += this.speed;
             } 
         }   
