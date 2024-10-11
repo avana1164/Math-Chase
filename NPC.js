@@ -4,16 +4,22 @@ class NPC extends Person{
         this.xOriginal = this.x;
         this.yOriginal = this.y;
         this.obstacles = config.obstacles;
+        
         this.pFinder = new PathFinder(this);
         this.onPath = true;
     }
 
     update(objs){
+        let player;
+        for(let i = 0; i < objs.length; i++){
+            if(objs[i].type == 'player'){
+                player = objs[i];
+            }
+        }
 
-        let goalCol = 6;
-        let goalRow = 1;
+        let goalCol = Math.round((player.x + player.rectX)/32);
+        let goalRow = Math.round((player.y + player.rectY)/32);
 
-        //console.log(this.onPath);
         if(this.onPath){
             this.searchPath(goalCol, goalRow, this.obstacles, objs);
 
@@ -71,11 +77,11 @@ class NPC extends Person{
             }
 
             
-            let nextCol = this.pFinder.pathList[0].col;
-            let nextRow = this.pFinder.pathList[0].row;
-            if(nextCol == goalCol && nextRow == goalRow){
-                this.onPath = false;
-            }
+            // let nextCol = this.pFinder.pathList[0].col;
+            // let nextRow = this.pFinder.pathList[0].row;
+            // if(nextCol == goalCol && nextRow == goalRow){
+            //     this.onPath = false;
+            // }
         }
     } 
 }
