@@ -21,7 +21,6 @@ class Player extends Person{
             this.direction = 'right';
         }
             
-
         this.moveCharacter(this.isMoving, objs);
     }
 }

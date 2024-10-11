@@ -15,6 +15,10 @@ class NPC extends Person{
             }
         }
 
+        if(Math.abs(player.x + player.rectX - (this.x + this.rectX)) + Math.abs(player.y + player.rectY - (this.y + this.rectY)) == 150){
+            this.onPath = true;
+        }
+
         let goalCol = Math.round((player.x + player.rectX)/32);
         let goalRow = Math.round((player.y + player.rectY)/32);
 
@@ -25,7 +29,7 @@ class NPC extends Person{
         this.moveCharacter(!this.npcCollidingPlayer(this, player), objs);
     }
 
-    searchPath(goalCol, goalRow, obstacles, objs){
+    searchPath(goalCol, goalRow, obstacles){
         let startCol = (this.x + this.rectX)/32;
         let startRow = (this.y + this.rectY)/32;
         this.pFinder.setNodes(Math.round(startCol), Math.round(startRow), goalCol, goalRow, obstacles);
@@ -38,7 +42,7 @@ class NPC extends Person{
             let npcRight = this.x + this.rectX + this.rectWidth;
             let npcTop = this.y + this.rectY;
             let npcBottom = this.y + this.rectY + this.rectHeight;
-
+                
             if(npcTop > nextY && npcLeft >= nextX && npcRight < nextX + 32){
                 this.direction = 'up';
             } else if(npcTop < nextY && npcLeft >= nextX && npcRight < nextX + 32){
@@ -53,25 +57,25 @@ class NPC extends Person{
                 }
             } else if(npcTop > nextY && npcLeft > nextX) {
                 this.direction = 'up';
-                if(this.isTopColliding(objs)){
+                if(this.isTopColliding(obstacles)){
                     this.direction = 'left';
                 }
             } else if(npcTop > nextY && npcLeft < nextX){
                 this.direction = 'up';
-                if(this.isTopColliding(objs)){
+                if(this.isTopColliding(obstacles) || this.pFinder.pathList.length <= 1){
                     this.direction = 'right';
                 }
             } else if(npcTop < nextY && npcLeft > nextX){
                 this.direction = 'down';
-                if(this.isBottomColliding(objs)){
+                if(this.isBottomColliding(obstacles)){
                     this.direction = 'left';
                 }
             } else if(npcTop < nextY && npcLeft < nextX){
                 this.direction = 'down';
-                if(this.isBottomColliding(objs)){
+                if(this.isBottomColliding(obstacles) || this.pFinder.pathList.length <= 1){
                     this.direction = 'right';
                 }
-            }
+            }           
         }
     } 
 }
