@@ -53,9 +53,9 @@ class Person extends GameObject {
 
     isTopColliding (objs) {
         for(let i = 0; i < objs.length; i++){
-            if((this.rectY + this.y == objs[i].rectY + objs[i].y + objs[i].rectHeight) && 
+            if(((this.rectY + this.y == objs[i].rectY + objs[i].y + objs[i].rectHeight) && 
             (this.rectX + this.x + this.rectWidth > objs[i].rectX + objs[i].x) &&
-            (this.rectX + this.x < objs[i].rectX + objs[i].x + objs[i].rectWidth)){
+            (this.rectX + this.x < objs[i].rectX + objs[i].x + objs[i].rectWidth)) || this.rectY + this.y <= 0){
                 return true;
             }
         }
@@ -66,7 +66,7 @@ class Person extends GameObject {
         for(let i = 0; i < objs.length; i++){
             if((this.rectX + this.x == objs[i].rectX + objs[i].x + objs[i].rectWidth) && 
             (this.rectY + this.y + this.rectHeight > objs[i].rectY + objs[i].y) &&
-            (this.rectY + this.y < objs[i].rectY + objs[i].y + objs[i].rectHeight)){
+            (this.rectY + this.y < objs[i].rectY + objs[i].y + objs[i].rectHeight) || this.rectX + this.x <= 0){
                 return true;
             }
         }
@@ -77,7 +77,7 @@ class Person extends GameObject {
         for(let i = 0; i < objs.length; i++){
             if((this.rectY + this.y + this.rectHeight == objs[i].rectY + objs[i].y) && 
             (this.rectX + this.x + this.rectWidth > objs[i].rectX + objs[i].x) &&
-            (this.rectX + this.x < objs[i].rectX + objs[i].x + objs[i].rectWidth)){
+            (this.rectX + this.x < objs[i].rectX + objs[i].x + objs[i].rectWidth) || this.rectY + this.y + this.rectHeight >= 512){
                 return true;
             }
         }
@@ -88,7 +88,7 @@ class Person extends GameObject {
         for(let i = 0; i < objs.length; i++){
             if((this.rectX + this.x + this.rectWidth == objs[i].rectX + objs[i].x) && 
             (this.rectY + this.y + this.rectHeight > objs[i].rectY + objs[i].y) &&
-            (this.rectY + this.y < objs[i].rectY + objs[i].y + objs[i].rectHeight)){
+            (this.rectY + this.y < objs[i].rectY + objs[i].y + objs[i].rectHeight) || this.rectX + this.x + this.rectWidth >= 1024){
                 return true;
             }
         }
